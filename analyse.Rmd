@@ -1,0 +1,94 @@
+---
+title: "projet analyse de données"
+author: "Jerrari/ELghamraoui/Moutalattif/Hattabi"
+date: '2022-06-09'
+output:
+  word_document: default
+  pdf_document: default
+---
+```{r}
+setwd("C:/Users/pc/Downloads")
+ df <- read.csv("C:/Users/pc/Downloads/null.csv", header = TRUE)
+ View(df)
+ str(df)
+ summary(df)
+ df$Ciment=as.factor(df$Ciment)
+ df$Laitier_haut_fourneau=as.factor(df$Laitier_haut_fourneau)
+ df$Cendres_volantes=as.factor(df$Cendres_volantes)
+ df$Eau=as.factor(df$Eau)
+ df$Superplastifiant=as.factor(df$Superplastifiant)
+ df$Granulats_grossiers=as.factor(df$Granulats_grossiers)
+ df$Granulats_fins=as.factor(df$Granulats_fins)
+ df$Age=as.factor(df$Age)
+ df$Resistance=as.factor(df$Resistance)
+ str(df)
+ df$Ciment=as.numeric(df$Ciment)
+ df$Laitier_haut_fourneau=as.numeric(df$Laitier_haut_fourneau)
+ df$Cendres_volantes=as.numeric(df$Cendres_volantes)
+ df$Eau=as.numeric(df$Eau)
+ df$Superplastifiant=as.numeric(df$Superplastifiant)
+ df$Granulats_grossiers=as.numeric(df$Granulats_grossiers)
+ df$Granulats_fins=as.numeric(df$Granulats_fins)
+ df$Resistance=as.numeric(df$Resistance)
+ hist(df$Laitier_haut_fourneau)
+ boxplot(df$Laitier_haut_fourneau)
+ boxplot(df$Ciment)
+ hist(df$Ciment)
+ boxplot(df$Cendres_volantes)
+ hist(df$Cendres_volantes)
+ pairs(df)
+ Q1 <- quantile(df$Laitier_haut_fourneau, .25)
+ Q3 <- quantile(df$Laitier_haut_fourneau, .75)
+ IQR <- IQR(df$Laitier_haut_fourneau)
+no_outliers <- subset(df, df$Laitier_haut_fourneau> (Q1 - 1.5*IQR) & df$Laitier_haut_fourneau< (Q3 + 1.5*IQR))
+dim(no_outliers)
+df <- read.csv("C:/Users/pc/Downloads/null.csv", header = TRUE)
+df.cor<-cor(df)
+df.cor
+eigen(df.cor)
+res.pca <- PCA(df, scale.unit=TRUE, graph=T)
+train<-df[0:721,]
+dim(train)
+test<-df[722:1030,]
+dim(test)
+lmModel <- lm(Resistance ~ . , data = train)
+print(lmModel)
+test$PreditedResistance <- predict(lmModel, test)
+
+head(test[ , c("Resistance", "PreditedResistance")])
+
+
+
+
+
+
+
+
+
+
+
+
+```
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+```{r cars}
+summary(cars)
+```
+
+## Including Plots
+
+You can also embed plots, for example:
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
